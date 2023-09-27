@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7CF2B9E8-FFFE-4261-9137-84F014936BBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CepCSharp_API", "src\CepCSharp_API\CepCSharp_API.csproj", "{02C2E6DE-973C-4EC5-92FF-55F863A06568}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02C2E6DE-973C-4EC5-92FF-55F863A06568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C2E6DE-973C-4EC5-92FF-55F863A06568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C2E6DE-973C-4EC5-92FF-55F863A06568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C2E6DE-973C-4EC5-92FF-55F863A06568}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02C2E6DE-973C-4EC5-92FF-55F863A06568} = {7CF2B9E8-FFFE-4261-9137-84F014936BBA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7AB01A6-07E1-48CE-A244-A68B27A1959B}
+	EndGlobalSection
+EndGlobal
