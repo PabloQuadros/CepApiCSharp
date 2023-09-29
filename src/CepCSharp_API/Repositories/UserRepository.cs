@@ -4,10 +4,10 @@ namespace CepCSharp_API.Repositories
 {
     public class UserRepository
     {
-        public bool CreateUser(User user)
+        public async Task<Guid?> CreateUser(User user)
         {
-            if (user == null) return false;
-            return true;
+            if (user == null) return null;
+            return user.Id;
         }
     }
 }

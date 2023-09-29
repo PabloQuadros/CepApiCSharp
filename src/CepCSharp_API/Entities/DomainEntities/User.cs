@@ -1,148 +1,115 @@
 ﻿using CepCSharp_API.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace CepCSharp_API.Entities.DomainEntities
 {
     public class User
     {
+        public User() { }
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
-        [UserNameValidation]
-        public string Name { get; set; } = String.Empty;
-        [UserEmailValidation]
-        public string Email { get; set; } = String.Empty;
-        [UserPasswordValidation]
-        public string Password { get; set; } = String.Empty;
-        public DateOnly BirthDay { get; set; }
-        [UserSexValidation]
-        public UserSex Sex { get; set; }
-        [UserRoleValidation]
-        public UserRole Role { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public DateTime? BirthDay { get; set; }
+        public UserSex? Sex { get; set; }
+        public UserRole? Role { get; set; }
 
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class UserNameValidation : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
+        public User(Guid id, string? name, string? email, string? password, DateTime? birthDay, UserSex? sex, UserRole? role, DateTime createdDate, DateTime? lastUpdatedDate)
         {
-            if (value == null)
-            {
-                return false;
-            }
+            var validationErrors = new List<string>();
 
-            var name = value.ToString();
+            Id = id;
+            CreatedDate = createdDate;
+            LastUpdatedDate = lastUpdatedDate;
+            Name = UserNameValidation(name, validationErrors);
+            Email = UserEmailValidation(email, validationErrors);
+            Password = UserPasswordValidation(password, validationErrors);
+            BirthDay = birthDay;
+            Sex = UserSexValidation(sex, validationErrors);
+            Role = UserRoleValidation(role, validationErrors);
+
+            if (validationErrors.Count > 0)
+            {
+                throw new Exception(string.Join(Environment.NewLine, validationErrors));
+            }
+        }
+
+        public string UserNameValidation(string name, List<string> validationErrors)
+        {
+            string errorMessage = $"The field name cannot be null and must contain a minimum of 3 and a maximum of 50 characters, including: letters and spaces.";
+            if (name == null)
+            {
+                validationErrors.Add(errorMessage);
+            }
 
             if (!Regex.IsMatch(name, @"^[a-zA-Z ]{3,50}$"))
             {
-                return false;
+                validationErrors.Add(errorMessage);
             }
 
-            return true;
+            return name;
         }
 
-        public override string FormatErrorMessage(string field)
+        public string UserEmailValidation(string email, List<string> validationErrors)
         {
-            return $"The field {field} cannot be null and must contain a maximum of 50 characters, including: letters and spaces.";
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class UserRoleValidation : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
-        {
-            if (value == null)
+            var errorMessage = $"The field e-mail is invalid.";
+            if (email == null)
             {
-                return false;
+                validationErrors.Add(errorMessage);
             }
-
-            var role = value.ToString();
-
-            if (role != UserRole.Normal.ToString() && role != UserRole.Admin.ToString())
-            {
-                return false;
-            }
-            return true;
-        }
-        public override string FormatErrorMessage(string field)
-        {
-            return $"The field {field} is invalid.";
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class UserSexValidation : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
-        {
-            if (value == null)
-            {
-                return false;
-            }
-
-            var role = value.ToString();
-
-            if (role != UserSex.F.ToString() && role != UserSex.M.ToString())
-            {
-                return false;
-            }
-            return true;
-        }
-        public override string FormatErrorMessage(string field)
-        {
-            return $"The field {field} is invalid.";
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class UserEmailValidation : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
-        {
-            if (value == null)
-            {
-                return false;
-            }
-
-            var email = value.ToString();
 
             if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
             {
-                return false;
+                validationErrors.Add(errorMessage);
             }
-            return true;
+            return email;
         }
-        public override string FormatErrorMessage(string field)
-        {
-            return $"The field {field} is invalid.";
-        }
-    }
 
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-    public class UserPasswordValidation : ValidationAttribute
-    {
-        public override bool IsValid(object? value)
+        public UserRole? UserRoleValidation(UserRole? role, List<string> validationErrors)
         {
-            if (value == null)
+            var errorMessage = $"The field role is invalid.";
+            if (role == null)
             {
-                return false;
+                validationErrors.Add(errorMessage);
+            };
+
+            if (role != UserRole.Normal && role != UserRole.Admin)
+            {
+                validationErrors.Add(errorMessage);
+            }
+            return role;
+        }
+
+        public UserSex? UserSexValidation(UserSex? sex, List<string> validationErrors)
+        {
+            var errorMessage = $"The field sex is invalid.";
+            if (sex == null)
+            {
+                validationErrors.Add(errorMessage);
             }
 
-            var password = value.ToString();
+            if (sex != UserSex.F && sex != UserSex.M)
+            {
+                validationErrors.Add(errorMessage);
+            }
+            return sex;
+        }
+
+        public string UserPasswordValidation(string password, List<string> validationErrors)
+        {
+            var errorMessage = $"The password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number and one special character (@, $, !, %, *, ?, &).";
+            if (password == null)
+            {
+                validationErrors.Add(errorMessage);
+            }
 
             if (!Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"))
             {
-                return false;
+                validationErrors.Add(errorMessage);
             }
-            return true;
-        }
-        public override string FormatErrorMessage(string field)
-        {
-            return $"The password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number and one special character (@, $, !, %, *, ?, &).";
+            return password;
         }
     }
-
 }

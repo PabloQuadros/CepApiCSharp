@@ -18,10 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="DataBase\" />
     <Folder Include="Authentication\" />
-    <Folder Include="Servicies\" />
   </ItemGroup>
 
 </Project>
