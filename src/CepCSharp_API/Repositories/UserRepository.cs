@@ -31,7 +31,7 @@ namespace CepCSharp_API.Repositories
             return new User();
         }
 
-        public async Task<ICollection<User>?> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
             return new List<User>();
         }

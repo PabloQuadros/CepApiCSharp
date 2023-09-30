@@ -1,4 +1,5 @@
-﻿using CepCSharp_API.Entities.DomainEntities;
+﻿using AutoMapper;
+using CepCSharp_API.Entities.DomainEntities;
 using CepCSharp_API.Entities.DTOs;
 using CepCSharp_API.Entities.Records;
 using CepCSharp_API.Repositories;
@@ -8,10 +9,12 @@ namespace CepCSharp_API.Servicies
     public class UserService
     {
         public readonly UserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(UserRepository userRepository)
+        public UserService(UserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<Guid?> CreateUser(UserRecord userRecord)
@@ -90,7 +93,7 @@ namespace CepCSharp_API.Servicies
             }
         }
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<UserDto> GetUserById(Guid id)
         {
             try
             {
@@ -99,7 +102,7 @@ namespace CepCSharp_API.Servicies
                 {
                     throw new Exception("The informed user not exist.");
                 }
-                return exist;
+                return _mapper.Map<UserDto>(exist);
             }
             catch (Exception ex)
             {
@@ -107,12 +110,13 @@ namespace CepCSharp_API.Servicies
             }
         }
 
-        public async Task<ICollection<User>> GetUsers()
+        public async Task<IEnumerable<UserDto>> GetUsers()
         {
             try
             {
-                var users = _userRepository.GetAllUsers();
-                return new List<User>();
+                IEnumerable<User> users = await _userRepository.GetAllUsers();
+                IEnumerable<UserDto> usersDto = users.Select(u => _mapper.Map<UserDto>(u));
+                return usersDto;
             }
             catch (Exception ex)
             {
