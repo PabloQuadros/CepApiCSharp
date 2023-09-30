@@ -1,4 +1,5 @@
 ﻿using CepCSharp_API.Entities.DomainEntities;
+using CepCSharp_API.Entities.DTOs;
 using CepCSharp_API.Entities.Records;
 using CepCSharp_API.Repositories;
 
@@ -17,12 +18,132 @@ namespace CepCSharp_API.Servicies
         {
             try
             {
-                User newUser = new User(new Guid(), userRecord.Name, userRecord.Email, userRecord.Password, userRecord.BirthDay, userRecord.Sex, userRecord.Role, DateTime.Now, null);
+                User? exist = await _userRepository.GetUserByEmail(userRecord.Email);
+                if(exist != null) 
+                {
+                    throw new Exception("The informed e-mail is already in use.");
+                }
+                User newUser = new User(
+                    new Guid(), 
+                    userRecord.Name, 
+                    userRecord.Email, 
+                    userRecord.Password,
+                    userRecord.BirthDay,
+                    userRecord.Sex,
+                    userRecord.Role,
+                    DateTime.Now,
+                    null);
                 return await _userRepository.CreateUser(newUser);
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+    
+        public async Task UpdateUser(UserRecord userRecord, Guid id)
+        {
+            try
+            {
+                User? exist = await _userRepository.GetUserById(id);
+                if (exist != null)
+                {
+                    throw new Exception("The informed user not exist.");
+                }
+                User? existEmail = await _userRepository.GetUserByEmail(userRecord.Email);
+                if (existEmail != null && existEmail.Id != id)
+                {
+                    throw new Exception("The informed e-mail is already in use.");
+                }
+                User updateUser = new User(
+                    id,
+                    userRecord.Name,
+                    userRecord.Email,
+                    userRecord.Password,
+                    userRecord.BirthDay,
+                    userRecord.Sex,
+                    userRecord.Role,
+                    DateTime.Now,
+                    null);
+                await _userRepository.UpdateUser(updateUser);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task DeleteUser(Guid id)
+        {
+            try
+            {
+                User? exist = await _userRepository.GetUserById(id);
+                if (exist != null)
+                {
+                    throw new Exception("The informed user not exist.");
+                }
+                await _userRepository.DeleteUser(id);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<User> GetUserById(Guid id)
+        {
+            try
+            {
+                User? exist = await _userRepository.GetUserById(id);
+                if (exist != null)
+                {
+                    throw new Exception("The informed user not exist.");
+                }
+                return exist;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<ICollection<User>> GetUsers()
+        {
+            try
+            {
+                var users = _userRepository.GetAllUsers();
+                return new List<User>();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Object> Login(UserLoginRecord loginUser)
+        {
+            try
+            {
+                User? user = await _userRepository.GetUserByEmail(loginUser.Email);
+                if (user == null)
+                {
+                    throw new Exception("E-mail inválido.");
+                }
+                if (user.Password != loginUser.Password)
+                {
+                    throw new Exception("Senha inválida.");
+                }
+                //var token = TokenService.GenerateToken(user);
+                var userToken = new UserTokenDTO
+                {
+                    UserId = user.Id,
+                    Token = "Token"
+                };
+                return userToken;
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
     }
