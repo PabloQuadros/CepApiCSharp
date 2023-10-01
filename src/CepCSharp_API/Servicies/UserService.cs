@@ -138,7 +138,7 @@ namespace CepCSharp_API.Servicies
                     throw new Exception("Senha inválida.");
                 }
                 //var token = TokenService.GenerateToken(user);
-                var userToken = new UserTokenDTO
+                var userToken = new UserTokenDto
                 {
                     UserId = user.Id,
                     Token = "Token"
@@ -147,7 +147,7 @@ namespace CepCSharp_API.Servicies
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

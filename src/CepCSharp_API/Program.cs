@@ -19,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CepService>();
 builder.Services.AddScoped<UserRepository>();
 
 var app = builder.Build();
