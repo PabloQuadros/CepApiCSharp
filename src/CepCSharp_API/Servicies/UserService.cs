@@ -22,7 +22,7 @@ namespace CepCSharp_API.Servicies
             try
             {
                 User? exist = await _userRepository.GetUserByEmail(userRecord.Email);
-                if(exist != null) 
+                if (exist != null)
                 {
                     throw new Exception("The informed e-mail is already in use.");
                 }
@@ -34,7 +34,7 @@ namespace CepCSharp_API.Servicies
                     userRecord.BirthDay,
                     userRecord.Sex,
                     userRecord.Role,
-                    DateTime.Now,
+                    DateTime.UtcNow,
                     null);
                 return await _userRepository.CreateUser(newUser);
             }
@@ -85,7 +85,7 @@ namespace CepCSharp_API.Servicies
                 {
                     throw new Exception("The informed user not exist.");
                 }
-                await _userRepository.DeleteUser(id);
+                await _userRepository.DeleteUser(exist);
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace CepCSharp_API.Servicies
             try
             {
                 User? exist = await _userRepository.GetUserById(id);
-                if (exist != null)
+                if (exist == null)
                 {
                     throw new Exception("The informed user not exist.");
                 }

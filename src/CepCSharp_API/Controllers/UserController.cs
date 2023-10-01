@@ -1,5 +1,4 @@
 ﻿using CepCSharp_API.Entities.DTOs;
-using CepCSharp_API.Entities.Enums;
 using CepCSharp_API.Entities.Records;
 using CepCSharp_API.Servicies;
 using Microsoft.AspNetCore.Authorization;
@@ -35,7 +34,7 @@ namespace CepCSharp_API.Controllers
 
         [HttpPut]
         [Route("Update/{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Update([FromRoute] Guid id,[FromBody] UserRecord user)
         {
             try
@@ -51,7 +50,7 @@ namespace CepCSharp_API.Controllers
 
         [HttpDelete]
         [Route("Delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
         {
             try
@@ -67,7 +66,6 @@ namespace CepCSharp_API.Controllers
 
         [HttpGet]
         [Route("GetUser/{id}")]
-        [Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] Guid id)
         {
             try
@@ -83,7 +81,6 @@ namespace CepCSharp_API.Controllers
 
         [HttpGet]
         [Route("GetUsers")]
-        [Authorize]
         public async Task<IActionResult> GetUsers()
         {
             try

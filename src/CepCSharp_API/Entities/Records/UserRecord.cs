@@ -1,5 +1,4 @@
-﻿using CepCSharp_API.Entities.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CepCSharp_API.Entities.Records
 {
@@ -12,8 +11,10 @@ namespace CepCSharp_API.Entities.Records
         [Required]
         public string? Password { get; set; }
         public DateTime? BirthDay { get; set; }
-        public UserSex? Sex { get; set; }
+        [RegularExpression("^(Male|Female)$", ErrorMessage = "Sex must be 'Male' or 'Female'.")]
+        public string? Sex { get; set; }
         [Required]
-        public UserRole? Role { get; set; }
+        [RegularExpression("^(Admin|Normal)$", ErrorMessage = "Role must be 'Admin' or 'Normal'.")]
+        public string? Role { get; set; }
     }
 }

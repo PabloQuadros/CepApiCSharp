@@ -1,4 +1,6 @@
-﻿using CepCSharp_API.Entities.Enums;
+﻿
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 
 namespace CepCSharp_API.Entities.DomainEntities
@@ -13,10 +15,10 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string? Email { get; set; }
         public string? Password { get; set; }
         public DateTime? BirthDay { get; set; }
-        public UserSex? Sex { get; set; }
-        public UserRole? Role { get; set; }
+        public string? Sex { get; set; }
+        public string? Role { get; set; }
 
-        public User(Guid id, string? name, string? email, string? password, DateTime? birthDay, UserSex? sex, UserRole? role, DateTime createdDate, DateTime? lastUpdatedDate)
+        public User(Guid id, string? name, string? email, string? password, DateTime? birthDay, string? sex, string? role, DateTime createdDate, DateTime? lastUpdatedDate)
         {
             var validationErrors = new List<string>();
 
@@ -67,30 +69,30 @@ namespace CepCSharp_API.Entities.DomainEntities
             return email;
         }
 
-        public UserRole? UserRoleValidation(UserRole? role, List<string> validationErrors)
+        public string? UserRoleValidation(string? role, List<string> validationErrors)
         {
-            var errorMessage = $"The field role is invalid.";
+            var errorMessage = $"The field role is invalid, role must be 'Normal' or 'Admin'.";
             if (role == null)
             {
                 validationErrors.Add(errorMessage);
             };
 
-            if (role != UserRole.Normal && role != UserRole.Admin)
+            if (role != "Normal" && role != "Admin")
             {
                 validationErrors.Add(errorMessage);
             }
             return role;
         }
 
-        public UserSex? UserSexValidation(UserSex? sex, List<string> validationErrors)
+        public string? UserSexValidation(string? sex, List<string> validationErrors)
         {
-            var errorMessage = $"The field sex is invalid.";
+            var errorMessage = $"The field sex is invalid, sex must be 'Male' or 'Female'.";
             if (sex == null)
             {
                 validationErrors.Add(errorMessage);
             }
 
-            if (sex != UserSex.F && sex != UserSex.M)
+            if (sex != "Female" && sex != "Male")
             {
                 validationErrors.Add(errorMessage);
             }

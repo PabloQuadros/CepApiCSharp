@@ -1,6 +1,4 @@
-﻿using CepCSharp_API.Entities.Enums;
-
-namespace CepCSharp_API.Entities.DTOs
+﻿namespace CepCSharp_API.Entities.DTOs
 {
     public class UserDto
     {
@@ -8,7 +6,7 @@ namespace CepCSharp_API.Entities.DTOs
         public string Name { get; set; } = String.Empty;
         public string Email { get; set; } = String.Empty;
         public DateTime BirthDay { get; set; }
-        public UserSex Sex { get; set; }
-        public UserRole Role { get; set; }
+        public string Sex { get; set; }
+        public string Role { get; set; }
     }
 }
