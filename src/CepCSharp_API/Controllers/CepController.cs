@@ -1,5 +1,6 @@
 ﻿using CepCSharp_API.Entities.Records;
 using CepCSharp_API.Servicies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CepCSharp_API.Controllers
@@ -17,6 +18,7 @@ namespace CepCSharp_API.Controllers
 
         [HttpGet]
         [Route("/{cep}")]
+        [Authorize]
         public async Task<IActionResult> GetCep([FromRoute] string cep)
         {
             try

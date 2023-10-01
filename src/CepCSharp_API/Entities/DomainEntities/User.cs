@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 using System;
+using CepCSharp_API.Authentication;
 
 namespace CepCSharp_API.Entities.DomainEntities
 {
@@ -107,12 +108,11 @@ namespace CepCSharp_API.Entities.DomainEntities
             {
                 validationErrors.Add(errorMessage);
             }
-
             if (!Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"))
             {
                 validationErrors.Add(errorMessage);
             }
-            return password;
+            return PasswordHashing.HashPassword(password);
         }
     }
 }

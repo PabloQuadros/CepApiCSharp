@@ -34,7 +34,7 @@ namespace CepCSharp_API.Controllers
 
         [HttpPut]
         [Route("Update/{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] Guid id,[FromBody] UserRecord user)
         {
             try
@@ -50,7 +50,7 @@ namespace CepCSharp_API.Controllers
 
         [HttpDelete]
         [Route("Delete/{id}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
         {
             try

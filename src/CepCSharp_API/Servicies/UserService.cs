@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CepCSharp_API.Authentication;
 using CepCSharp_API.Entities.DomainEntities;
 using CepCSharp_API.Entities.DTOs;
 using CepCSharp_API.Entities.Records;
@@ -49,7 +50,7 @@ namespace CepCSharp_API.Servicies
             try
             {
                 User? exist = await _userRepository.GetUserById(id);
-                if (exist != null)
+                if (exist == null)
                 {
                     throw new Exception("The informed user not exist.");
                 }
@@ -66,9 +67,16 @@ namespace CepCSharp_API.Servicies
                     userRecord.BirthDay,
                     userRecord.Sex,
                     userRecord.Role,
-                    DateTime.Now,
-                    null);
-                await _userRepository.UpdateUser(updateUser);
+                    exist.CreatedDate,
+                    DateTime.UtcNow);
+                exist.Name = updateUser.Name;
+                exist.Email = updateUser.Email;
+                exist.Password = updateUser.Password;
+                exist.BirthDay = updateUser.BirthDay;
+                exist.Sex = updateUser.Sex;
+                exist.Role = updateUser.Role;
+                exist.LastUpdatedDate = DateTime.UtcNow;
+                await _userRepository.UpdateUser(exist);
             }
             catch (Exception ex)
             {
@@ -81,7 +89,7 @@ namespace CepCSharp_API.Servicies
             try
             {
                 User? exist = await _userRepository.GetUserById(id);
-                if (exist != null)
+                if (exist == null)
                 {
                     throw new Exception("The informed user not exist.");
                 }
@@ -133,15 +141,15 @@ namespace CepCSharp_API.Servicies
                 {
                     throw new Exception("E-mail inválido.");
                 }
-                if (user.Password != loginUser.Password)
+                if ((PasswordHashing.VerifyPassword(user.Password, loginUser.Password)) == false)
                 {
                     throw new Exception("Senha inválida.");
                 }
-                //var token = TokenService.GenerateToken(user);
+                var token = TokenService.GenerateToken(user);
                 var userToken = new UserTokenDto
                 {
                     UserId = user.Id,
-                    Token = "Token"
+                    Token = token
                 };
                 return userToken;
             }
