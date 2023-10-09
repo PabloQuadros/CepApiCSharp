@@ -1,9 +1,5 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using CepCSharp_API.Authentication;
 using System.Text.RegularExpressions;
-using System;
-using CepCSharp_API.Authentication;
 
 namespace CepCSharp_API.Entities.DomainEntities
 {
@@ -43,12 +39,8 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string UserNameValidation(string name, List<string> validationErrors)
         {
             string errorMessage = $"The field name cannot be null and must contain a minimum of 3 and a maximum of 50 characters, including: letters and spaces.";
-            if (name == null)
-            {
-                validationErrors.Add(errorMessage);
-            }
 
-            if (!Regex.IsMatch(name, @"^[a-zA-Z ]{3,50}$"))
+            if (name == null || !Regex.IsMatch(name, @"^[a-zA-Z ]{3,50}$"))
             {
                 validationErrors.Add(errorMessage);
             }
@@ -59,12 +51,8 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string UserEmailValidation(string email, List<string> validationErrors)
         {
             var errorMessage = $"The field e-mail is invalid.";
-            if (email == null)
-            {
-                validationErrors.Add(errorMessage);
-            }
 
-            if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
+            if (email == null || !Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
             {
                 validationErrors.Add(errorMessage);
             }
@@ -74,12 +62,8 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string? UserRoleValidation(string? role, List<string> validationErrors)
         {
             var errorMessage = $"The field role is invalid, role must be 'Normal' or 'Admin'.";
-            if (role == null)
-            {
-                validationErrors.Add(errorMessage);
-            };
 
-            if (role != "Normal" && role != "Admin")
+            if (role == null || (role != "Normal" && role != "Admin"))
             {
                 validationErrors.Add(errorMessage);
             }
@@ -89,12 +73,8 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string? UserSexValidation(string? sex, List<string> validationErrors)
         {
             var errorMessage = $"The field sex is invalid, sex must be 'Male' or 'Female'.";
-            if (sex == null)
-            {
-                validationErrors.Add(errorMessage);
-            }
 
-            if (sex != "Female" && sex != "Male")
+            if (sex == null || (sex != "Female" && sex != "Male"))
             {
                 validationErrors.Add(errorMessage);
             }
@@ -104,11 +84,8 @@ namespace CepCSharp_API.Entities.DomainEntities
         public string UserPasswordValidation(string password, List<string> validationErrors)
         {
             var errorMessage = $"The password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number and one special character (@, $, !, %, *, ?, &).";
-            if (password == null)
-            {
-                validationErrors.Add(errorMessage);
-            }
-            if (!Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"))
+
+            if (password == null || !Regex.IsMatch(password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"))
             {
                 validationErrors.Add(errorMessage);
             }
